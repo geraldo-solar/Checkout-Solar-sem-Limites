@@ -48,11 +48,11 @@ function App() {
              
              {/* Logo Section */}
              <div className="flex flex-col items-center mb-6">
-                <div className="text-gold-500 mb-[-10px]">
-                    <Icons.Sun className="w-12 h-12" />
-                </div>
-                <div className="font-script text-5xl text-gold-500 relative z-10">Solar</div>
-                <div className="text-[10px] tracking-[0.4em] text-gold-600/70 font-sans uppercase mt-1">HOTEL</div>
+                <img 
+                  src="/logoSOLAR.png" 
+                  alt="Hotel Solar" 
+                  className="w-32 md:w-40 h-auto drop-shadow-2xl"
+                />
              </div>
 
              {/* Main Title Section */}
