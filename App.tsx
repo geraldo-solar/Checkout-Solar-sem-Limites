@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { CheckoutForm } from './components/CheckoutForm';
 import { Confirmation } from './components/Confirmation';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { generateConfirmationMessage } from './services/geminiService';
 import { CustomerData, Step } from './types';
 import { Icons, PRODUCT_NAME } from './constants';
@@ -31,7 +31,10 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-sand-200/50 flex flex-col">
+    <div className="min-h-screen bg-sand-200/50 flex flex-col relative">
+      {/* Floating WhatsApp Button */}
+      <FloatingWhatsApp />
+
       {/* Branded Header */}
       <div className="bg-brand-dark text-white py-12 shadow-lg mb-8 relative overflow-hidden flex-shrink-0">
         {/* Subtle background glow effect */}

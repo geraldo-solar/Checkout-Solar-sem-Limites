@@ -1,11 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 import { CustomerData } from "../types";
 
-// Safely access API key to prevent crashes in environments where process is undefined
+// Safely access API key to prevent crashes in environments where process is undefined (like GitHub Pages)
 const getApiKey = () => {
   try {
-    return process.env.API_KEY || '';
+    // Check if process exists and has env property before accessing
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env.API_KEY || '';
+    }
+    return '';
   } catch (e) {
+    // Silently fail if process is not defined
     return '';
   }
 };
