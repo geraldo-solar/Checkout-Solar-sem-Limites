@@ -84,15 +84,6 @@ function App() {
         
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
              
-             {/* Logo Section */}
-             <div className="flex flex-col items-center mb-6">
-                <div className="text-gold-500 mb-[-10px]">
-                    <Icons.Sun className="w-12 h-12" />
-                </div>
-                <div className="font-script text-5xl text-gold-500 relative z-10">Solar</div>
-                <div className="text-[10px] tracking-[0.4em] text-gold-600/70 font-sans uppercase mt-1">HOTEL</div>
-             </div>
-
              {/* Main Title Section */}
              <div className="flex flex-col items-center">
                 <h1 className="font-serif text-6xl md:text-7xl text-gold-300 font-bold tracking-wider leading-none drop-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-gold-300 to-gold-600">
