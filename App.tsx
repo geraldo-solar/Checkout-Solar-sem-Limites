@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { CheckoutForm } from './components/CheckoutForm';
 import { Confirmation } from './components/Confirmation';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { AdminLogin } from './components/AdminLogin';
+import { AdminDashboard } from './components/AdminDashboard';
 import { generateConfirmationMessage } from './services/geminiService';
-import { CustomerData, Step } from './types';
-import { Icons, PRODUCT_NAME } from './constants';
+import { saveOrder } from './services/orderService';
+import { sendOrderToGoogleSheets } from './services/googleSheetsService';
+import { CustomerData, Step, View } from './types';
+import { Icons } from './constants';
 
 function App() {
+  const [view, setView] = useState<View>(View.CLIENT);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+
   const [step, setStep] = useState<Step>(Step.FORM);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState<string>("");
@@ -15,7 +22,14 @@ function App() {
     setIsLoading(true);
     
     try {
-      // Generate personalized confirmation message using AI
+      // 1. SAVE ORDER LOCALLY (Mock Database for Admin Dashboard)
+      const savedOrder = saveOrder(data);
+
+      // 2. SEND TO GOOGLE SHEETS (Background Process)
+      // We don't await this so it doesn't slow down the UI
+      sendOrderToGoogleSheets(savedOrder).catch(err => console.error("Sheets Error:", err));
+
+      // 3. Generate personalized confirmation message using AI
       const message = await generateConfirmationMessage(data);
       
       setConfirmationMessage(message);
@@ -34,6 +48,30 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Admin Navigation Handlers
+  const handleAdminLogin = () => {
+    setIsAdminAuthenticated(true);
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminAuthenticated(false);
+    setView(View.CLIENT);
+  };
+
+  // RENDER ADMIN VIEW
+  if (view === View.ADMIN) {
+    if (!isAdminAuthenticated) {
+      return (
+        <AdminLogin 
+          onLogin={handleAdminLogin} 
+          onCancel={() => setView(View.CLIENT)} 
+        />
+      );
+    }
+    return <AdminDashboard onLogout={handleAdminLogout} />;
+  }
+
+  // RENDER CLIENT VIEW (Checkout)
   return (
     <div className="min-h-screen bg-sand-200/50 flex flex-col relative">
       {/* Floating WhatsApp Button */}
@@ -48,11 +86,11 @@ function App() {
              
              {/* Logo Section */}
              <div className="flex flex-col items-center mb-6">
-                <img 
-                  src="/logoSOLAR.png" 
-                  alt="Hotel Solar" 
-                  className="w-32 md:w-40 h-auto drop-shadow-2xl"
-                />
+                <div className="text-gold-500 mb-[-10px]">
+                    <Icons.Sun className="w-12 h-12" />
+                </div>
+                <div className="font-script text-5xl text-gold-500 relative z-10">Solar</div>
+                <div className="text-[10px] tracking-[0.4em] text-gold-600/70 font-sans uppercase mt-1">HOTEL</div>
              </div>
 
              {/* Main Title Section */}
@@ -96,11 +134,19 @@ function App() {
               <p>E-mail: reserva@hotelsolar.tur.br</p>
             </div>
 
-            {/* Copyright */}
-            <div className="">
+            {/* Copyright & Admin Link */}
+            <div className="flex flex-col items-center gap-4">
               <p className="text-xs text-brand-green/50">
                 © 2025 Hotel Solar. Todos os direitos reservados.
               </p>
+              
+              {/* Discrete Admin Button */}
+              <button 
+                onClick={() => setView(View.ADMIN)}
+                className="text-[10px] text-brand-green/30 hover:text-gold-500 transition-colors uppercase tracking-widest"
+              >
+                Acesso Administrativo
+              </button>
             </div>
 
         </div>
