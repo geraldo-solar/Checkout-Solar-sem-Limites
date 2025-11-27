@@ -1,4 +1,7 @@
 export interface CustomerData {
+  id?: string; // Unique ID
+  createdAt?: string; // Timestamp
+  
   firstName: string;
   lastName: string;
   address: string;
@@ -11,9 +14,11 @@ export interface CustomerData {
   cpf: string;
   comments?: string;
   
-  quantity: number; // Added quantity
+  quantity: number;
 
   paymentMethod: 'credit_card' | 'pix';
+  paymentStatus?: 'pending' | 'approved' | 'rejected'; // Status for admin
+  
   installments?: string;
   cardNumber?: string;
   cardHolder?: string;
@@ -30,4 +35,9 @@ export interface OrderState {
 export enum Step {
   FORM = 'FORM',
   CONFIRMATION = 'CONFIRMATION'
+}
+
+export enum View {
+  CLIENT = 'CLIENT',
+  ADMIN = 'ADMIN'
 }
