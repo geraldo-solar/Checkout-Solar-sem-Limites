@@ -3,9 +3,10 @@ import { Icons } from '../constants';
 
 interface ConfirmationProps {
   message: string;
+  onBack: () => void;
 }
 
-export const Confirmation: React.FC<ConfirmationProps> = ({ message }) => {
+export const Confirmation: React.FC<ConfirmationProps> = ({ message, onBack }) => {
   return (
     <div className="h-full flex flex-col items-center justify-center p-8 md:p-12 bg-white text-center animate-in fade-in duration-700">
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-moss-800 mb-6 shadow-sm">
@@ -25,17 +26,22 @@ export const Confirmation: React.FC<ConfirmationProps> = ({ message }) => {
         </p>
       </div>
       
-      <div className="mt-8 space-y-3">
+      <div className="mt-8 space-y-4 max-w-lg mx-auto">
          <p className="text-sm text-gray-500 uppercase tracking-widest font-bold">Próximos Passos</p>
-         <div className="flex flex-col gap-2 text-gray-600 text-sm">
-            <span>1. Verifique sua caixa de entrada.</span>
-            <span>2. Acesse o portal do aluno.</span>
-            <span>3. Comece sua jornada solar.</span>
+         <div className="flex flex-col gap-4 text-gray-600 text-sm text-left">
+            <div className="flex gap-3">
+                <span className="font-bold text-moss-800 text-base">1.</span>
+                <span>Se você efetuou a compra via PIX, enviar comprovante para nosso e-mail <strong className="text-moss-900">reserva@hotelsolar.tur.br</strong> ou para nosso Whatsapp <strong className="text-moss-900">91-98100-0800</strong></span>
+            </div>
+            <div className="flex gap-3">
+                <span className="font-bold text-moss-800 text-base">2.</span>
+                <span>Se efetuou a compra via cartão, aguarde a confirmação no seu e-mail ou Whatsapp, pois estamos processando a sua compra.</span>
+            </div>
          </div>
       </div>
       
       <button 
-        onClick={() => window.location.reload()}
+        onClick={onBack}
         className="mt-12 text-moss-800 font-bold hover:text-gold-600 underline decoration-gold-500 decoration-2 underline-offset-4 transition-colors"
       >
         Voltar para o início

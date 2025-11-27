@@ -15,9 +15,7 @@ function App() {
     setIsLoading(true);
     
     try {
-      // Simulate network request time
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      // Generate personalized confirmation message using AI
       const message = await generateConfirmationMessage(data);
       
       setConfirmationMessage(message);
@@ -28,6 +26,12 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleBackToStart = () => {
+    setConfirmationMessage("");
+    setStep(Step.FORM);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -68,7 +72,7 @@ function App() {
              <CheckoutForm onSubmit={handleCheckout} isLoading={isLoading} />
            ) : (
              <div className="max-w-4xl mx-auto">
-                <Confirmation message={confirmationMessage} />
+                <Confirmation message={confirmationMessage} onBack={handleBackToStart} />
              </div>
            )}
       </div>

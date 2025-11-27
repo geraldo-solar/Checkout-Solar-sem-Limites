@@ -7,38 +7,91 @@ interface CheckoutFormProps {
   isLoading: boolean;
 }
 
-// Placeholder Policy Text
+// Updated Policy Text
 const POLICY_TEXT = `
-POLÍTICA DE CANCELAMENTO E REEMBOLSO - HOTEL SOLAR
+POLÍTICA DE CANCELAMENTO E CONDIÇÕES GERAIS - HOTEL SOLAR
 
-1. CONSIDERAÇÕES GERAIS
-Esta política visa estabelecer as regras e condições para cancelamento, desistência e reembolso de reservas e pacotes "Solar sem Limites" adquiridos junto ao HOTEL SOLAR, em conformidade com o Código de Defesa do Consumidor e as normas da Embratur.
+1. COMPOSIÇÃO DO PACOTE
 
-2. DO DIREITO DE ARREPENDIMENTO
-O cliente poderá exercer o direito de arrependimento da compra no prazo de até 7 (sete) dias corridos, a contar da data da compra, garantindo o reembolso integral do valor pago, sem ônus (Art. 49 do Código de Defesa do Consumidor).
+1.1. Diárias
+O pacote é composto por:
+• 5 diárias para uso em qualquer data, exceto no período do Réveillon;
+• + 1 diária bônus.
 
-3. REGRAS DE CANCELAMENTO APÓS O PRAZO DE 7 DIAS
-a) Cancelamento solicitado com até 30 (trinta) dias de antecedência da data de check-in:
-   - Será retido 30% (trinta por cento) do valor total pago a título de taxa administrativa.
-   - O restante (70%) será reembolsado ou convertido em crédito para uso futuro.
+Vigência para utilização:
+• 1 ano corrido a partir da compra;
+• 2 anos corridos a partir da compra para quem adquirir a partir de 2 pacotes.
 
-b) Cancelamento solicitado entre 29 e 15 dias de antecedência:
-   - Será retido 50% (cinquenta por cento) do valor total pago.
+1.2. Ocupação
+Permitida hospedagem de até 4 pessoas em apartamento tipo Quádruplo.
 
-c) Cancelamento solicitado com menos de 15 dias de antecedência:
-   - Não haverá reembolso dos valores pagos. O valor poderá, a critério exclusivo do hotel e mediante disponibilidade, ser convertido em carta de crédito para utilização em outra data, dentro do prazo de 6 meses.
+2. DIÁRIA BÔNUS
+As diárias bônus são cortesia, válidas exclusivamente para períodos de baixa temporada (fora de férias e feriados).
 
-4. NO-SHOW (NÃO COMPARECIMENTO)
-O não comparecimento do hóspede na data prevista de entrada, sem comunicação prévia por escrito, será considerado "No-Show". A reserva será cancelada e não haverá reembolso dos valores pagos.
+3. VALOR E PAGAMENTO
+O pacote custa R$ 2.800,00, podendo ser parcelado em até 6x no cartão de crédito, acrescido das taxas da operadora.
 
-5. FORÇA MAIOR
-Cancelamentos decorrentes de casos fortuitos ou força maior (como pandemias, desastres naturais, bloqueio de estradas) serão analisados caso a caso, visando a remarcação da data sem custo adicional, sujeito à disponibilidade tarifária.
+4. CANCELAMENTO DE RESERVA
+• Cancelamentos podem ser feitos até 7 dias antes do check-in.
+• Cancelamentos com menos de 7 dias implicam desconto de 1 diária do pacote.
 
-6. PRAZOS PARA REEMBOLSO
-O reembolso, quando devido, será processado em até 30 (trinta) dias úteis após a formalização do cancelamento. Para pagamentos em cartão de crédito, o estorno poderá ocorrer na fatura seguinte ou subsequente, dependendo da operadora do cartão.
+5. TRANSFERÊNCIA DO PACOTE
+O titular pode transferir o pacote para terceiros mediante aviso prévio no ato da reserva, via e-mail.
 
-Para mais informações, entre em contato através do telefone (91) 98100-0800 ou e-mail reserva@hotelsolar.tur.br.
+6. GARANTIAS E CRÉDITOS
+
+6.1. Após o término da vigência do pacote, diárias não utilizadas ficam como crédito por mais 360 dias para futuras reservas.
+6.2. Em caso de arrependimento imediatamente após o primeiro check-in, o Hotel Solar efetuará o cancelamento da compra e fará o reembolso do valor restante proporcionalmente.
+6.3. Se cancelar dentro de 30 dias após a compra, devolvemos 100% do seu valor sem perguntas e sem burocracia.
+
+7. DISPONIBILIDADE
+A reserva será garantida mediante disponibilidade para a data solicitada.
+Solicitações podem ser feitas pelo WhatsApp (91 98100-0800) ou e-mail (reserva@hotelsolar.tur.br).
+
+8. OBRIGAÇÕES DO HOTEL SOLAR
+
+8.1. Fornecer acomodações conforme especificado no pacote e neste regulamento.
+8.2. Garantir a qualidade dos serviços e das instalações.
+
+9. OBSERVAÇÕES GERAIS
+• A utilização das diárias está sujeita às condições gerais de hospedagem do Hotel Solar.
+• As diárias incluem café da manhã, passeio de barco e bikes à disposição dos hóspedes.
+• Recomenda-se que o comprador contrate seguro viagem para eventuais imprevistos.
+• Endereço: Av. Atlântica, 634–672, Salinópolis – PA, 68721-000
+• Contatos: reserva@hotelsolar.tur.br | 91 98100-0800
 `.trim();
+
+// CPF Validation Algorithm
+const isValidCPF = (cpf: string) => {
+  if (typeof cpf !== "string") return false;
+  
+  // Remove non-digits
+  cpf = cpf.replace(/[^\d]+/g, '');
+  
+  // Check if length is 11 or if all digits are equal
+  if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+  
+  // Validate 1st digit
+  let sum = 0;
+  let remainder;
+  for (let i = 1; i <= 9; i++) {
+    sum = sum + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+  }
+  remainder = (sum * 10) % 11;
+  if ((remainder === 10) || (remainder === 11)) remainder = 0;
+  if (remainder !== parseInt(cpf.substring(9, 10))) return false;
+  
+  // Validate 2nd digit
+  sum = 0;
+  for (let i = 1; i <= 10; i++) {
+    sum = sum + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+  }
+  remainder = (sum * 10) % 11;
+  if ((remainder === 10) || (remainder === 11)) remainder = 0;
+  if (remainder !== parseInt(cpf.substring(10, 11))) return false;
+  
+  return true;
+};
 
 // Luhn Algorithm for Credit Card Validation
 const isValidCreditCard = (value: string) => {
@@ -107,6 +160,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
   const [showPolicy, setShowPolicy] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerData | 'terms', string>>>({});
   const [touched, setTouched] = useState<Partial<Record<keyof CustomerData, boolean>>>({});
+  const [isCepLoading, setIsCepLoading] = useState(false);
 
   // Calculations
   const baseTotal = formData.quantity * UNIT_PRICE;
@@ -120,7 +174,10 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
       case 'lastName': return !value.trim() ? "Sobrenome é obrigatório" : "";
       case 'email': return !String(value).match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? "Email inválido" : "";
       case 'phone': return String(value).replace(/\D/g, '').length < 10 ? "Telefone inválido" : "";
-      case 'cpf': return !value.trim() ? "CPF é obrigatório" : "";
+      case 'cpf': 
+        if (!value.trim()) return "CPF é obrigatório";
+        if (!isValidCPF(value)) return "CPF inválido";
+        return "";
       case 'address': return !value.trim() ? "Endereço é obrigatório" : "";
       case 'city': return !value.trim() ? "Cidade é obrigatória" : "";
       case 'zipCode': return !value.trim() ? "CEP é obrigatório" : "";
@@ -146,7 +203,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     if (!formData.lastName.trim()) return false;
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) return false;
     if (formData.phone.replace(/\D/g, '').length < 10) return false;
-    if (!formData.cpf.trim()) return false;
+    if (!isValidCPF(formData.cpf)) return false;
     if (!formData.address.trim()) return false;
     if (!formData.city.trim()) return false;
     if (!formData.zipCode.trim()) return false;
@@ -191,6 +248,74 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
     
     if (touched.phone) {
         setErrors(prev => ({ ...prev, phone: value.replace(/\D/g, '').length < 10 ? "Telefone inválido" : "" }));
+    }
+  };
+
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 11) value = value.slice(0, 11);
+    
+    // Mask: 000.000.000-00
+    if (value.length > 9) {
+      value = `${value.slice(0, 3)}.${value.slice(3, 6)}.${value.slice(6, 9)}-${value.slice(9)}`;
+    } else if (value.length > 6) {
+      value = `${value.slice(0, 3)}.${value.slice(3, 6)}.${value.slice(6)}`;
+    } else if (value.length > 3) {
+      value = `${value.slice(0, 3)}.${value.slice(3)}`;
+    }
+
+    setFormData(prev => ({ ...prev, cpf: value }));
+
+    if (touched.cpf) {
+        setErrors(prev => ({ ...prev, cpf: !isValidCPF(value) ? "CPF inválido" : "" }));
+    }
+  };
+
+  const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 8) value = value.slice(0, 8);
+    
+    // Mask: 00000-000
+    let formattedValue = value;
+    if (value.length > 5) {
+      formattedValue = `${value.slice(0, 5)}-${value.slice(5)}`;
+    }
+    
+    setFormData(prev => ({ ...prev, zipCode: formattedValue }));
+
+    // Fetch Address if complete
+    if (value.length === 8) {
+      setIsCepLoading(true);
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${value}/json/`);
+        const data = await response.json();
+        
+        if (!data.erro) {
+          setFormData(prev => ({
+            ...prev,
+            zipCode: formattedValue,
+            address: data.logradouro || prev.address,
+            city: data.localidade || prev.city,
+            state: data.uf || prev.state,
+          }));
+          
+          // Clear errors for fields we just filled
+          setErrors(prev => ({
+            ...prev,
+            zipCode: "",
+            address: "",
+            city: "",
+            state: ""
+          }));
+        } else {
+           setErrors(prev => ({ ...prev, zipCode: "CEP não encontrado" }));
+        }
+      } catch (error) {
+        console.error("Error fetching CEP", error);
+        // Silent fail or optional user notification
+      } finally {
+        setIsCepLoading(false);
+      }
     }
   };
 
@@ -283,60 +408,46 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
             </div>
           </div>
 
-          <div>
-             <label className={labelClass}>Procure o endereço</label>
-             <input 
-                type="text" 
-                className={inputClass()} 
-                placeholder="Digite um local"
-              />
-          </div>
-
-          <div>
-             <label className={labelClass}>Endereço *</label>
-             <input 
-                type="text" 
-                className={inputClass(errors.address)}
-                value={formData.address}
-                onChange={e => setFormData({...formData, address: e.target.value})}
-                onBlur={() => handleBlur('address')}
-             />
-             {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
-          </div>
-
-           <div>
-             <label className={labelClass}>Cidade *</label>
-             <input 
-                type="text" 
-                className={inputClass(errors.city)}
-                value={formData.city}
-                onChange={e => setFormData({...formData, city: e.target.value})}
-                onBlur={() => handleBlur('city')}
-             />
-             {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="md:col-span-1">
-              <label className={labelClass}>CEP *</label>
+              <label className={labelClass}>
+                CEP * {isCepLoading && <span className="animate-pulse text-gold-500 text-xs ml-1">...</span>}
+              </label>
               <input 
                 type="text" 
                 className={inputClass(errors.zipCode)}
                 value={formData.zipCode}
-                onChange={e => setFormData({...formData, zipCode: e.target.value})}
+                onChange={handleCepChange}
                 onBlur={() => handleBlur('zipCode')}
+                placeholder="00000-000"
+                maxLength={9}
               />
                {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
             </div>
+            <div className="md:col-span-3">
+              <label className={labelClass}>Endereço *</label>
+              <input 
+                  type="text" 
+                  className={inputClass(errors.address)}
+                  value={formData.address}
+                  onChange={e => setFormData({...formData, address: e.target.value})}
+                  onBlur={() => handleBlur('address')}
+              />
+              {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
              <div className="md:col-span-2">
-              <label className={labelClass}>País *</label>
-              <select 
-                className={inputClass()}
-                value={formData.country}
-                onChange={e => setFormData({...formData, country: e.target.value})}
-              >
-                <option value="Brasil">Brasil</option>
-              </select>
+              <label className={labelClass}>Cidade *</label>
+              <input 
+                  type="text" 
+                  className={inputClass(errors.city)}
+                  value={formData.city}
+                  onChange={e => setFormData({...formData, city: e.target.value})}
+                  onBlur={() => handleBlur('city')}
+              />
+              {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
             </div>
              <div className="md:col-span-1">
               <label className={labelClass}>UF *</label>
@@ -347,19 +458,45 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                 onBlur={() => handleBlur('state')}
               >
                 <option value="">Selecione</option>
-                <option value="SP">SP</option>
-                <option value="RJ">RJ</option>
-                <option value="MG">MG</option>
-                <option value="RS">RS</option>
-                <option value="BA">BA</option>
-                <option value="PA">PA</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
                 <option value="AM">AM</option>
+                <option value="BA">BA</option>
                 <option value="CE">CE</option>
-                <option value="PE">PE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
                 <option value="MA">MA</option>
-                {/* Add other states as needed */}
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
               </select>
                {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
+            </div>
+             <div className="md:col-span-1">
+              <label className={labelClass}>País *</label>
+              <select 
+                className={inputClass()}
+                value={formData.country}
+                onChange={e => setFormData({...formData, country: e.target.value})}
+              >
+                <option value="Brasil">Brasil</option>
+              </select>
             </div>
           </div>
 
@@ -396,9 +533,10 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                 type="text" 
                 className={inputClass(errors.cpf)}
                 value={formData.cpf}
-                onChange={e => setFormData({...formData, cpf: e.target.value})}
+                onChange={handleCpfChange}
                 onBlur={() => handleBlur('cpf')}
                 placeholder="000.000.000-00"
+                maxLength={14}
              />
              {errors.cpf && <p className="text-red-500 text-xs mt-1">{errors.cpf}</p>}
           </div>
