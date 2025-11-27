@@ -896,32 +896,20 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                     <span className="text-[11px] font-bold uppercase tracking-wider">Ambiente 100% Seguro</span>
                 </div>
                 
-                <div className="flex flex-wrap justify-center gap-8 opacity-75 grayscale hover:grayscale-0 transition-all duration-500">
+                <div className="flex flex-wrap justify-center gap-6 opacity-90 hover:opacity-100 transition-all duration-500">
                     {/* Data Protection */}
-                    <div className="flex items-center gap-2 group cursor-default">
-                        <Icons.Shield className="w-6 h-6 text-moss-800 group-hover:scale-110 transition-transform" />
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-bold leading-none text-gray-500">DADOS</span>
-                            <span className="text-[10px] font-bold leading-none text-moss-800">PROTEGIDOS</span>
-                        </div>
+                    <div className="flex items-center justify-center group cursor-default">
+                        <img src="/data-protection-badge.png" alt="Dados Protegidos" className="h-12 w-auto object-contain group-hover:scale-110 transition-transform" />
                     </div>
                     
-                    {/* Encrypted Payment */}
-                    <div className="flex items-center gap-2 group cursor-default">
-                        <Icons.SafetyBadge className="w-6 h-6 text-gold-500 group-hover:scale-110 transition-transform" />
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-bold leading-none text-gray-500">PAGAMENTO</span>
-                            <span className="text-[10px] font-bold leading-none text-gold-600">SEGURO</span>
-                        </div>
+                    {/* SSL Secure */}
+                    <div className="flex items-center justify-center group cursor-default">
+                        <img src="/ssl-badge.png" alt="SSL Seguro" className="h-12 w-auto object-contain group-hover:scale-110 transition-transform" />
                     </div>
 
-                    {/* Verified */}
-                    <div className="flex items-center gap-2 group cursor-default">
-                        <Icons.CheckCircle className="w-6 h-6 text-success-600 group-hover:scale-110 transition-transform" />
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-bold leading-none text-gray-500">COMPRA</span>
-                            <span className="text-[10px] font-bold leading-none text-success-600">VERIFICADA</span>
-                        </div>
+                    {/* Verified Purchase */}
+                    <div className="flex items-center justify-center group cursor-default">
+                        <img src="/verified-badge.png" alt="Compra Verificada" className="h-12 w-auto object-contain group-hover:scale-110 transition-transform" />
                     </div>
                 </div>
             </div>
