@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { CustomerData } from '../types';
 import { getOrders, updateOrderStatus } from '../services/orderService';
 import { sendOrderToGoogleSheets } from '../services/googleSheetsService';
+import { notifyPaymentStatus } from '../services/notifyStatusService';
 import { Icons, formatCurrency, UNIT_PRICE, CREDIT_CARD_SURCHARGE } from '../constants';
 
 interface AdminDashboardProps {
@@ -27,12 +28,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setOrders(loadedOrders);
   };
 
-  const handleStatusUpdate = (id: string, status: 'approved' | 'rejected') => {
+  const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
     const updatedOrder = updateOrderStatus(id, status);
     if (updatedOrder) {
         // Send the updated status to Google Sheets
         // This will append a new row with the updated status, creating a history log
         sendOrderToGoogleSheets(updatedOrder).catch(err => console.error("Error updating sheet:", err));
+        
+        // Send email notification to customer
+        try {
+            await notifyPaymentStatus({
+                orderId: id,
+                status,
+                customerData: updatedOrder
+            });
+            alert(`E-mail de ${status === 'approved' ? 'aprovação' : 'recusa'} enviado para ${updatedOrder.email}`);
+        } catch (error) {
+            console.error('Erro ao enviar e-mail:', error);
+            alert('Status atualizado, mas houve erro ao enviar e-mail. Verifique o console.');
+        }
         
         loadOrders(); // Refresh table
         
