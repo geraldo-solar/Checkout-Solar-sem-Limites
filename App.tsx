@@ -7,6 +7,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { generateConfirmationMessage } from './services/geminiService';
 import { saveOrder } from './services/orderService';
 import { sendOrderToGoogleSheets } from './services/googleSheetsService';
+import { addContactAndSendEmail } from './services/brevoService';
 import { CustomerData, Step, View } from './types';
 import { Icons } from './constants';
 
@@ -29,7 +30,17 @@ function App() {
       // We don't await this so it doesn't slow down the UI
       sendOrderToGoogleSheets(savedOrder).catch(err => console.error("Sheets Error:", err));
 
-      // 3. Generate personalized confirmation message using AI
+      // 3. ADD CONTACT TO BREVO AND SEND CONFIRMATION EMAIL
+      addContactAndSendEmail({
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        quantity: data.quantity,
+        paymentMethod: data.paymentMethod
+      }).catch(err => console.error("Brevo Error:", err));
+
+      // 4. Generate personalized confirmation message using AI
       const message = await generateConfirmationMessage(data);
       
       setConfirmationMessage(message);
