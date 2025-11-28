@@ -68,16 +68,16 @@ export const Icons = {
     </svg>
   ),
   Visa: () => (
-    <img src="/visa.png" alt="Visa" className="h-8 w-auto object-contain" />
+    <img src="/visa.png" alt="Visa" className="h-6 w-auto object-contain" />
   ),
   Mastercard: () => (
-    <img src="/mastercard.png" alt="Mastercard" className="h-8 w-auto object-contain" />
+    <img src="/mastercard.png" alt="Mastercard" className="h-6 w-auto object-contain" />
   ),
   Amex: () => (
-    <img src="/amex.png" alt="American Express" className="h-8 w-auto object-contain" />
+    <img src="/amex.png" alt="American Express" className="h-6 w-auto object-contain" />
   ),
   Elo: () => (
-    <img src="/elo.png" alt="Elo" className="h-8 w-auto object-contain" />
+    <img src="/elo.png" alt="Elo" className="h-6 w-auto object-contain" />
   ),
   ChevronDown: ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
