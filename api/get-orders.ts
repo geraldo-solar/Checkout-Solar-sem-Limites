@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 // Use Google Sheets API to read data
-const SPREADSHEET_ID = '1VHxZ-vYLZQqHxGqZJxKZlwWXjhGqZq1_-3VpJQqmqKEfDqKPMmZ5Hs6Zt-F0xAd_hLpjhqOWKMr5vUXFfzN';
-const SHEET_NAME = 'Pedidos';
+const SPREADSHEET_ID = '1gadR_c-fLhfbDpgZB9abcFA0e7F9febcHIB4_p5Rk60';
+const SHEET_NAME = 'Pedidos Solar sem Limites';
 const API_KEY = process.env.GOOGLE_SHEETS_API_KEY || 'AIzaSyBqKZlwWXjhGqZq1_-3VpJQqmqKEfDqKPMmZ5Hs6Zt-F0xAd';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
