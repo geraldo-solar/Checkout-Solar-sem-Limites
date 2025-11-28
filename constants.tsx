@@ -68,33 +68,16 @@ export const Icons = {
     </svg>
   ),
   Visa: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="20" className="fill-blue-800">
-      <path d="M10.15 15.65h-2.5L5.75 3.5h2.6l1.2 7.75 2.85-7.75h2.7l-4.95 12.15zm6.85-11.8c-.85-.35-2.2-.7-3.95-.7-4.35 0-7.4 2.3-7.45 5.6-.05 2.45 2.2 3.8 3.85 4.6 1.7.85 2.3 1.4 2.3 2.15 0 1.15-1.4 1.7-2.7 1.7-1.8 0-2.8-.25-4.25-.9l-.6-.3-.65 3c1.1.5 3.1.95 5.15.95 4.85 0 8-2.35 8.05-6 .05-2-1.2-3.5-3.8-4.75-1.6-.8-2.55-1.35-2.55-2.15 0-.75.85-1.5 2.7-1.5 1.5 0 2.6.35 3.45.7l.4.2.4-2.9zM22.75 3.5h-2c-.6 0-1.05.35-1.35 1.05l-3.8 9.1-1.3-6.6c-.25-1.15-1-2.4-2.65-3.05l1.75 8.6L16.25 3.5h2.6l3.9 12.15h2.7L22.75 3.5zM3.45 3.5H.2L0 4.65C2.5 5.6 5.3 6.15 6.65 7.1L7.55 3.5H3.45z"/>
-    </svg>
+    <img src="/visa.png" alt="Visa" className="h-8 w-auto object-contain" />
   ),
   Mastercard: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="20">
-      <g fill="none" fillRule="evenodd">
-        <rect width="32" height="20" rx="2" fill="#252525"/>
-        <circle cx="9" cy="10" r="6" fill="#EB001B"/>
-        <circle cx="15" cy="10" r="6" fill="#F79E1B" fillOpacity=".9"/>
-      </g>
-    </svg>
+    <img src="/mastercard.png" alt="Mastercard" className="h-8 w-auto object-contain" />
   ),
   Amex: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="20" className="fill-blue-500">
-       <rect width="32" height="20" rx="2" fill="#006FCF"/>
-       <path d="M4.5 5.5h2l1 2 1-2h2l-2 4 2 4h-2l-1-2-1 2h-2l2-4-2-4zm6.5 0h6v1h-4v2h4v1h-4v3h-2v-7zm7.5 0h2l1.5 3 1.5-3h2l-2.5 4.5 2.5 4.5h-2l-1.5-3-1.5 3h-2l2.5-4.5-2.5-4.5z" fill="#FFF"/>
-    </svg>
+    <img src="/amex.png" alt="American Express" className="h-8 w-auto object-contain" />
   ),
   Elo: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="20">
-      <rect width="32" height="20" rx="2" fill="#000"/>
-      <circle cx="8" cy="6" r="2" fill="#FF0000"/>
-      <circle cx="16" cy="14" r="2" fill="#FFFF00"/>
-      <circle cx="24" cy="6" r="2" fill="#00FF00"/>
-      <path d="M6 14h20v2H6z" fill="#FFF"/>
-    </svg>
+    <img src="/elo.png" alt="Elo" className="h-8 w-auto object-contain" />
   ),
   ChevronDown: ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
