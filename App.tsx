@@ -37,7 +37,8 @@ function App() {
         lastName: data.lastName,
         phone: data.phone,
         quantity: data.quantity,
-        paymentMethod: data.paymentMethod
+        paymentMethod: data.paymentMethod,
+        installments: data.installments
       }).catch(err => console.error("Brevo Error:", err));
 
       // 4. Generate personalized confirmation message using AI

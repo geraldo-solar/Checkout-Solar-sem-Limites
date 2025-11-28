@@ -10,6 +10,7 @@ interface ContactData {
   phone: string;
   quantity: number;
   paymentMethod: string;
+  installments?: string;
 }
 
 /**

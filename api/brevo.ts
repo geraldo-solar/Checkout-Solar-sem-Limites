@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, firstName, lastName, phone, quantity, paymentMethod } = req.body;
+    const { email, firstName, lastName, phone, quantity, paymentMethod, installments } = req.body;
 
     // Validate required fields
     if (!email || !firstName || !lastName) {
@@ -73,7 +73,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           SMS: phone || 'Não informado',
           QUANTITY: (quantity || 1).toString(),
           TOTAL_VALUE: `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })},00`,
-          PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito'
+          PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito',
+          INSTALLMENTS: paymentMethod === 'credit_card' ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'À vista'
         }
       })
     });
