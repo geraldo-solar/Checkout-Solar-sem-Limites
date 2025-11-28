@@ -101,7 +101,7 @@ function App() {
                 <img 
                   src="/logoSOLAR2.png" 
                   alt="Hotel Solar" 
-                  className="h-32 md:h-40 w-auto drop-shadow-lg"
+                  className="h-20 md:h-24 w-auto drop-shadow-lg opacity-95"
                 />
              </div>
              
