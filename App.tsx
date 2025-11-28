@@ -96,6 +96,15 @@ function App() {
         
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-4">
              
+             {/* Logo */}
+             <div className="mb-6">
+                <img 
+                  src="/logoSOLAR2.png" 
+                  alt="Hotel Solar" 
+                  className="h-32 md:h-40 w-auto drop-shadow-lg"
+                />
+             </div>
+             
              {/* Main Title Section */}
              <div className="flex flex-col items-center">
                 <h1 className="font-serif text-6xl md:text-7xl text-gold-300 font-bold tracking-wider leading-none drop-shadow-sm bg-clip-text text-transparent bg-gradient-to-b from-gold-300 to-gold-600">
