@@ -7,6 +7,9 @@ const BREVO_API_URL = 'https://api.brevo.com/v3';
 const APPROVED_TEMPLATE_ID = 15;
 const REJECTED_TEMPLATE_ID = 16;
 
+// ID da lista de clientes
+const CLIENT_LIST_ID = 9; // Lista: Clientes Solar sem Limites
+
 interface NotifyStatusRequest {
   orderId: string;
   status: 'approved' | 'rejected';
@@ -83,6 +86,32 @@ export default async function handler(
 
     const emailResult = await emailResponse.json();
     console.log(`✅ E-mail de ${status} enviado com sucesso!`, emailResult);
+
+    // Se o pagamento foi aprovado, adicionar à lista de clientes
+    if (status === 'approved') {
+      try {
+        const addToListResponse = await fetch(`${BREVO_API_URL}/contacts/${encodeURIComponent(customerData.email)}`, {
+          method: 'PUT',
+          headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'api-key': BREVO_API_KEY
+          },
+          body: JSON.stringify({
+            listIds: [CLIENT_LIST_ID]
+          })
+        });
+
+        if (addToListResponse.ok || addToListResponse.status === 204) {
+          console.log(`✅ Cliente adicionado à lista "Clientes Solar sem Limites"`);
+        } else {
+          console.warn(`⚠️ Não foi possível adicionar à lista: ${addToListResponse.status}`);
+        }
+      } catch (listError) {
+        console.error('Erro ao adicionar à lista:', listError);
+        // Não falhar a requisição por causa disso
+      }
+    }
 
     return res.status(200).json({
       success: true,

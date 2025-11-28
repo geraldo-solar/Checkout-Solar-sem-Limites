@@ -40,7 +40,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           QUANTITY: quantity || 1,
           PAYMENT_METHOD: paymentMethod || 'N/A'
         },
-        listIds: [LIST_ID],
         updateEnabled: true
       })
     });
