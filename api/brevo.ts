@@ -72,9 +72,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           EMAIL: email,
           SMS: phone || 'Não informado',
           QUANTITY: (quantity || 1).toString(),
-          TOTAL_VALUE: `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })},00`,
+          TOTAL_VALUE: paymentMethod === 'credit_card' 
+            ? `R$ ${((quantity || 1) * 2800 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            : `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
           PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito',
-          INSTALLMENTS: paymentMethod === 'credit_card' ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'À vista'
+          INSTALLMENTS: paymentMethod === 'credit_card' 
+            ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            : 'À vista'
         }
       })
     });
