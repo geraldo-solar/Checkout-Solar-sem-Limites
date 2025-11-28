@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 const BREVO_API_URL = 'https://api.brevo.com/v3';
-const LIST_ID = 8;
+const LIST_ID = 9; // Lista: Clientes Solar sem Limites
 const PIX_TEMPLATE_ID = 13;
 const CARD_TEMPLATE_ID = 14;
 
