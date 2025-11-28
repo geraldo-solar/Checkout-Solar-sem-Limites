@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { CheckoutForm } from './components/CheckoutForm';
 import { Confirmation } from './components/Confirmation';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
-import { AdminLogin } from './components/AdminLogin';
-import { AdminDashboard } from './components/AdminDashboard';
+// Admin components removed - using Google Sheets for management
 import { generateConfirmationMessage } from './services/geminiService';
 import { saveOrder } from './services/orderService';
 import { sendOrderToGoogleSheets } from './services/googleSheetsService';
@@ -12,8 +11,7 @@ import { CustomerData, Step, View } from './types';
 import { Icons } from './constants';
 
 function App() {
-  const [view, setView] = useState<View>(View.CLIENT);
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  // Admin view removed - using Google Sheets for management
 
   const [step, setStep] = useState<Step>(Step.FORM);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,28 +58,9 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Admin Navigation Handlers
-  const handleAdminLogin = () => {
-    setIsAdminAuthenticated(true);
-  };
+  // Admin handlers removed - using Google Sheets for management
 
-  const handleAdminLogout = () => {
-    setIsAdminAuthenticated(false);
-    setView(View.CLIENT);
-  };
-
-  // RENDER ADMIN VIEW
-  if (view === View.ADMIN) {
-    if (!isAdminAuthenticated) {
-      return (
-        <AdminLogin 
-          onLogin={handleAdminLogin} 
-          onCancel={() => setView(View.CLIENT)} 
-        />
-      );
-    }
-    return <AdminDashboard onLogout={handleAdminLogout} />;
-  }
+  // Admin view removed - using Google Sheets for management
 
   // RENDER CLIENT VIEW (Checkout)
   return (
@@ -152,13 +131,7 @@ function App() {
                 © 2025 Hotel Solar. Todos os direitos reservados.
               </p>
               
-              {/* Discrete Admin Button */}
-              <button 
-                onClick={() => setView(View.ADMIN)}
-                className="text-[10px] text-brand-green/30 hover:text-gold-500 transition-colors uppercase tracking-widest"
-              >
-                Acesso Administrativo
-              </button>
+              {/* Admin button removed - using Google Sheets for management */}
             </div>
 
         </div>
