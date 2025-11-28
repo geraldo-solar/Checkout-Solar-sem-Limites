@@ -71,7 +71,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           LASTNAME: lastName,
           EMAIL: email,
           SMS: phone || 'Não informado',
-          QUANTITY: (quantity || 1).toString()
+          QUANTITY: (quantity || 1).toString(),
+          TOTAL_VALUE: `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })},00`,
+          PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito'
         }
       })
     });
