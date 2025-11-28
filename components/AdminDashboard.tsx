@@ -21,18 +21,64 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const loadOrders = async () => {
     try {
       setLoading(true);
-      console.log('📥 Buscando pedidos da API...');
+      console.log('📥 Buscando pedidos do Google Sheets...');
       
-      // Fetch orders from API (Google Sheets)
-      const response = await fetch('/api/get-orders');
-      const data = await response.json();
+      // Fetch directly from Google Sheets API
+      const SPREADSHEET_ID = '1gadR_c-fLhfbDpgZB9abcFA0e7F9febcHIB4_p5Rk60';
+      const SHEET_NAME = 'Página 1';
+      const API_KEY = 'AIzaSyBqKZlwWXjhGqZq1_-3VpJQqmqKEfDqKPMmZ5Hs6Zt-F0xAd';
+      const range = `${SHEET_NAME}!A2:N1000`;
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}?key=${API_KEY}`;
       
-      if (data.success && data.orders) {
-        console.log(`✅ ${data.orders.length} pedidos carregados`);
-        setOrders(data.orders);
+      const response = await fetch(url);
+      
+      if (response.ok) {
+        const data = await response.json();
+        const rows = data.values || [];
+        
+        console.log(`✅ ${rows.length} pedidos encontrados`);
+        
+        // Transform rows into order objects
+        const orders = rows.map((row: string[]) => {
+          const [date, id, name, email, phone, cpf, quantity, total, paymentMethod, status, paymentDetails] = row;
+          
+          const nameParts = (name || '').split(' ');
+          const firstName = nameParts[0] || '';
+          const lastName = nameParts.slice(1).join(' ') || '';
+          const qty = parseInt(quantity) || 1;
+          
+          let installments = 1;
+          if (paymentMethod === 'Cartão' && paymentDetails) {
+            const match = paymentDetails.match(/(\d+)x/);
+            if (match) installments = parseInt(match[1]);
+          }
+          
+          return {
+            id: id || `order-${Date.now()}`,
+            firstName,
+            lastName,
+            email: email || '',
+            phone: phone || '',
+            cpf: cpf || '',
+            quantity: qty,
+            paymentMethod: paymentMethod === 'Cartão' ? 'credit_card' : 'pix',
+            installments,
+            paymentStatus: status || 'pending',
+            createdAt: date || new Date().toISOString(),
+            cardNumber: paymentDetails?.includes('Final:') ? paymentDetails.split('Final:')[1]?.trim() : undefined
+          };
+        });
+        
+        // Sort by newest first
+        orders.sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
+          return dateB - dateA;
+        });
+        
+        setOrders(orders);
       } else {
-        console.warn('⚠️ Nenhum pedido encontrado na API');
-        // Fallback to localStorage
+        console.warn('⚠️ Erro ao buscar do Google Sheets, usando localStorage');
         const localOrders = getOrders();
         setOrders(localOrders);
       }
