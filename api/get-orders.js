@@ -1,11 +1,9 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
 // Use Google Sheets API to read data
 const SPREADSHEET_ID = '1gadR_c-fLhfbDpgZB9abcFA0e7F9febcHIB4_p5Rk60';
-const SHEET_NAME = 'P\u00e1gina 1';
+const SHEET_NAME = 'Página 1';
 const API_KEY = process.env.GOOGLE_SHEETS_API_KEY || 'AIzaSyBqKZlwWXjhGqZq1_-3VpJQqmqKEfDqKPMmZ5Hs6Zt-F0xAd';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req, res) {
   // Only allow GET requests
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -22,6 +20,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!response.ok) {
       console.error('❌ Erro ao buscar do Google Sheets:', response.status);
+      const errorText = await response.text();
+      console.error('Erro detalhado:', errorText);
       throw new Error(`Failed to fetch from Google Sheets: ${response.status}`);
     }
 
@@ -31,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log(`✅ ${rows.length} linhas encontradas`);
     
     // Transform rows into order objects
-    const orders = rows.map((row: string[]) => {
+    const orders = rows.map((row) => {
       // Row structure: [date, id, name, email, phone, cpf, quantity, total, paymentMethod, status, paymentDetails]
       const [date, id, name, email, phone, cpf, quantity, total, paymentMethod, status, paymentDetails] = row;
       
@@ -84,7 +84,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.error('❌ Erro na API get-orders:', error);
     return res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error.message || 'Unknown error',
       orders: []
     });
   }
