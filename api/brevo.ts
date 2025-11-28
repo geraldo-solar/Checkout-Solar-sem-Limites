@@ -75,6 +75,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           EMAIL: email,
           SMS: phone || 'Não informado',
           QUANTITY: (quantity || 1).toString(),
+          TOTAL_NIGHTS: ((quantity || 1) * 6).toString(),
           TOTAL_VALUE: paymentMethod === 'credit_card' 
             ? `R$ ${((quantity || 1) * 2800 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
             : `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
