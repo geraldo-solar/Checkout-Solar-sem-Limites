@@ -3,7 +3,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const BREVO_API_KEY = process.env.BREVO_API_KEY || '';
 const BREVO_API_URL = 'https://api.brevo.com/v3';
 const LIST_ID = 8;
-const TEMPLATE_ID = 12;
+const PIX_TEMPLATE_ID = 13;
+const CARD_TEMPLATE_ID = 14;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST requests
@@ -47,7 +48,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Continue even if contact creation fails
     }
 
-    // 2. Send confirmation email
+    // 2. Send confirmation email with correct template based on payment method
+    const templateId = paymentMethod === 'pix' ? PIX_TEMPLATE_ID : CARD_TEMPLATE_ID;
+    
     const emailResponse = await fetch(`${BREVO_API_URL}/smtp/email`, {
       method: 'POST',
       headers: {
@@ -56,7 +59,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         'api-key': BREVO_API_KEY
       },
       body: JSON.stringify({
-        templateId: TEMPLATE_ID,
+        templateId,
         to: [
           {
             email,
