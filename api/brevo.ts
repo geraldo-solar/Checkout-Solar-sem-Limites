@@ -84,13 +84,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           INSTALLMENTS: paymentMethod === 'credit_card' 
             ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
             : 'À vista'
-        },
-        attachment: [
-          {
-            url: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf',
-            name: 'Regulamento Solar sem Limites 2025.pdf'
-          }
-        ]
+        }
       })
     });
 

@@ -74,7 +74,16 @@ export default async function handler(
           }
         ],
         templateId: templateId,
-        params: emailParams
+        params: emailParams,
+        // Anexar regulamento apenas se o pagamento foi aprovado
+        ...(status === 'approved' && {
+          attachment: [
+            {
+              url: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf',
+              name: 'Regulamento Solar sem Limites 2025.pdf'
+            }
+          ]
+        })
       })
     });
 
