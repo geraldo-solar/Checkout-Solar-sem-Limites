@@ -124,18 +124,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             <p className="text-sm">Realize uma compra no formulário para testar.</p>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-bold tracking-wider">
-                  <th className="p-4">Data</th>
-                  <th className="p-4">Cliente</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Pagamento</th>
-                  <th className="p-4">Total</th>
-                  <th className="p-4 text-center">Ações</th>
-                </tr>
-              </thead>
+          <div className="bg-white rounded-lg shadow overflow-hidden">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200 text-xs uppercase text-gray-500 font-bold tracking-wider">
+                    <th className="p-4">Data</th>
+                    <th className="p-4">Cliente</th>
+                    <th className="p-4">Status</th>
+                    <th className="p-4">Pagamento</th>
+                    <th className="p-4">Total</th>
+                    <th className="p-4 text-center">Ações</th>
+                  </tr>
+                </thead>
               <tbody className="divide-y divide-gray-100 text-sm">
                 {orders.map((order, index) => (
                   <tr key={index} className="hover:bg-gray-50 transition-colors">
@@ -192,8 +194,69 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     </td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden divide-y divide-gray-200">
+              {orders.map((order, index) => (
+                <div key={index} className="p-4 hover:bg-gray-50">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <div className="font-bold text-brand-dark text-base">
+                        {order.firstName} {order.lastName}
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1">{order.cpf}</div>
+                      <div className="text-xs text-gray-500 mt-1">{formatDate(order.createdAt)}</div>
+                    </div>
+                    <div>
+                      {renderStatusBadge(order.paymentStatus)}
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className={`
+                        inline-block px-2 py-1 rounded text-xs font-bold uppercase
+                        ${order.paymentMethod === 'pix' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}
+                      `}>
+                        {order.paymentMethod === 'credit_card' ? 'Cartão' : 'Pix'}
+                      </span>
+                      {order.paymentMethod === 'credit_card' && (
+                        <span className="text-xs text-gray-500">{order.installments}x</span>
+                      )}
+                    </div>
+                    <div className="font-bold text-moss-800 text-lg">
+                      {formatCurrency(calculateTotal(order))}
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => setSelectedOrder(order)}
+                      className="flex-1 text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-2 text-sm rounded transition-colors"
+                    >
+                      Ver Detalhes
+                    </button>
+                    <button 
+                      onClick={() => order.id && handleStatusUpdate(order.id, 'approved')}
+                      className="w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-500 hover:text-white flex items-center justify-center transition-all shadow-sm border border-green-200"
+                      title="Aprovar Pagamento"
+                    >
+                      <Icons.Check className="w-5 h-5" />
+                    </button>
+                    <button 
+                      onClick={() => order.id && handleStatusUpdate(order.id, 'rejected')}
+                      className="w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all shadow-sm border border-red-200"
+                      title="Recusar Pagamento"
+                    >
+                      <Icons.X className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </main>
