@@ -14,6 +14,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { email, firstName, lastName, phone, quantity, paymentMethod, installments } = req.body;
+    
+    // Debug log
+    console.log('Brevo API - Dados recebidos:', { paymentMethod, installments, quantity });
 
     // Validate required fields
     if (!email || !firstName || !lastName) {
