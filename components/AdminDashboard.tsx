@@ -12,20 +12,38 @@ interface AdminDashboardProps {
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [orders, setOrders] = useState<CustomerData[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<CustomerData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadOrders();
   }, []);
 
-  const loadOrders = () => {
-    const loadedOrders = getOrders();
-    // Sort by newest first
-    loadedOrders.sort((a, b) => {
-      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-      return dateB - dateA;
-    });
-    setOrders(loadedOrders);
+  const loadOrders = async () => {
+    try {
+      setLoading(true);
+      console.log('📥 Buscando pedidos da API...');
+      
+      // Fetch orders from API (Google Sheets)
+      const response = await fetch('/api/get-orders');
+      const data = await response.json();
+      
+      if (data.success && data.orders) {
+        console.log(`✅ ${data.orders.length} pedidos carregados`);
+        setOrders(data.orders);
+      } else {
+        console.warn('⚠️ Nenhum pedido encontrado na API');
+        // Fallback to localStorage
+        const localOrders = getOrders();
+        setOrders(localOrders);
+      }
+    } catch (error) {
+      console.error('❌ Erro ao carregar pedidos:', error);
+      // Fallback to localStorage
+      const localOrders = getOrders();
+      setOrders(localOrders);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
@@ -104,7 +122,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-end">
-           <h2 className="text-2xl font-bold text-gray-800">Pedidos Realizados ({orders.length})</h2>
+           <h2 className="text-2xl font-bold text-gray-800">
+             Pedidos Realizados ({orders.length})
+             {loading && <span className="ml-2 text-sm text-gray-500">Carregando...</span>}
+           </h2>
            <button 
              onClick={() => {
                 if(confirm('Tem certeza? Isso apagará todos os pedidos deste navegador.')) {

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
+    "@vercel/kv": "^3.0.0",
     "@vercel/node": "^5.5.13",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
