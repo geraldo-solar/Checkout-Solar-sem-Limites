@@ -55,7 +55,8 @@ export default async function handler(
       SMS: customerData.phone,
       QUANTITY: customerData.quantity.toString(),
       TOTAL_VALUE: customerData.totalValue,
-      TOTAL_NIGHTS: customerData.totalNights.toString()
+      TOTAL_NIGHTS: customerData.totalNights.toString(),
+      REGULAMENTO_URL: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf'
     };
 
     // Enviar e-mail via Brevo
@@ -74,16 +75,7 @@ export default async function handler(
           }
         ],
         templateId: templateId,
-        params: emailParams,
-        // Anexar regulamento apenas se o pagamento foi aprovado
-        ...(status === 'approved' && {
-          attachment: [
-            {
-              url: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663213718939/ehBjwuEyVsyVUsDW.pdf',
-              name: 'Regulamento Solar sem Limites 2025.pdf'
-            }
-          ]
-        })
+        params: emailParams
       })
     });
 
