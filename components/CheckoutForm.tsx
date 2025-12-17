@@ -642,7 +642,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                     <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm text-gray-700 space-y-1 font-mono">
                         <p className="font-bold mb-2 text-moss-800">Coordenadas bancárias:</p>
                         <p>Pix</p>
-                        <p>Chave: <span className="font-bold">091-98100-0800</span> (Telefone)</p>
+                        <p>Chave: <span className="font-bold">91981000800</span> (Celular)</p>
                         <div className="h-px bg-gray-200 my-2"></div>
                         <p>Caixa Econômica Federal</p>
                         <p>Agência: 3632</p>
