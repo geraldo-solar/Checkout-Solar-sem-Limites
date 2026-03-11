@@ -381,7 +381,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
         <span className="text-2xl" role="img" aria-label="Atenção">⚠️</span>
         <div>
           <p className="text-red-800 font-bold text-sm md:text-base uppercase tracking-wide mb-1">Finalize seu pagamento imediatamente</p>
-          <p className="text-red-700 text-xs md:text-sm">Seu convite para o Grupo Seleto VIP está pré-reservado. Complete os dados abaixo (Pix/Transferência) para garantir uma das últimas vagas remanescentes.</p>
+          <p className="text-red-700 text-xs md:text-sm">Seu convite para o Grupo Seleto VIP está pré-reservado. Complete os dados abaixo (Pix, Transferência ou Cartão de Crédito) para garantir uma das últimas vagas remanescentes.</p>
         </div>
       </div>
       {/* Personal Data Section */}
@@ -767,24 +767,24 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSubmit, isLoading 
                 <div>
                   <label className={labelClass}>Validade</label>
                   <div className="flex gap-2">
-                    <select
+                    <input
+                      type="text"
+                      placeholder="MM"
+                      maxLength={2}
                       className={inputClass(errors.cardExpiryMonth)}
                       value={formData.cardExpiryMonth}
-                      onChange={e => setFormData({ ...formData, cardExpiryMonth: e.target.value })}
+                      onChange={e => setFormData({ ...formData, cardExpiryMonth: e.target.value.replace(/\D/g, '') })}
                       onBlur={() => handleBlur('cardExpiryMonth')}
-                    >
-                      <option>mês</option>
-                      {[...Array(12)].map((_, i) => <option key={i} value={i + 1}>{i + 1}</option>)}
-                    </select>
-                    <select
+                    />
+                    <input
+                      type="text"
+                      placeholder="AAAA"
+                      maxLength={4}
                       className={inputClass(errors.cardExpiryYear)}
                       value={formData.cardExpiryYear}
-                      onChange={e => setFormData({ ...formData, cardExpiryYear: e.target.value })}
+                      onChange={e => setFormData({ ...formData, cardExpiryYear: e.target.value.replace(/\D/g, '') })}
                       onBlur={() => handleBlur('cardExpiryYear')}
-                    >
-                      <option>ano</option>
-                      {[...Array(10)].map((_, i) => <option key={i} value={2024 + i}>{2024 + i}</option>)}
-                    </select>
+                    />
                   </div>
                   {(errors.cardExpiryMonth || errors.cardExpiryYear) && <p className="text-red-500 text-xs mt-1">Data inválida</p>}
                 </div>

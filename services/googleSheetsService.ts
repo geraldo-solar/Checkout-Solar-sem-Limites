@@ -2,7 +2,7 @@ import { CustomerData } from "../types";
 import { UNIT_PRICE, CREDIT_CARD_SURCHARGE, formatCurrency } from "../constants";
 
 // URL configurada para o Web App do Google Apps Script
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0pxcf6TK9_sBmy04bOiMhry5d3lK2N1v_-e_JMprglS1PrsiiTtmCPdH6TBEfO06h/exec"; 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDc7jiWeW1VRRSuBpVyCdF7BpbYvS7Ai0ZWPmeEmFMx6mmIJlBTk_AHSvtD6W8q1PW/exec";
 
 export const sendOrderToGoogleSheets = async (order: CustomerData) => {
   if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("SUA_URL")) {
@@ -11,8 +11,8 @@ export const sendOrderToGoogleSheets = async (order: CustomerData) => {
   }
 
   const baseTotal = order.quantity * UNIT_PRICE;
-  const total = order.paymentMethod === 'credit_card' 
-    ? baseTotal * (1 + CREDIT_CARD_SURCHARGE) 
+  const total = order.paymentMethod === 'credit_card'
+    ? baseTotal * (1 + CREDIT_CARD_SURCHARGE)
     : baseTotal;
 
   const paymentDetails = order.paymentMethod === 'credit_card'
@@ -38,7 +38,7 @@ export const sendOrderToGoogleSheets = async (order: CustomerData) => {
     // This implies we won't get a readable response JSON, but the request will succeed.
     await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors", 
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
